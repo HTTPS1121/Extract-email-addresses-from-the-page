@@ -578,4 +578,12 @@ body {
 
 :root[data-theme="light"] .btn {
     box-shadow: none;
+}
+
+.emails-buttons {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.ignore-buttons {
+    grid-template-columns: repeat(2, 1fr);
 } 

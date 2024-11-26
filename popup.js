@@ -42,7 +42,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         copyToClipboard();
                         break;
                     case 'איפוס':
-                        reset();
+                        if (document.querySelector('.tab.active').textContent.includes('חילוץ')) {
+                            resetExtractedList();
+                        } else {
+                            resetIgnoreList();
+                        }
                         break;
                     case 'הוסף':
                         addToIgnoreList();
@@ -354,11 +358,17 @@ function copyToClipboard() {
         .catch(err => console.error('Error copying to clipboard:', err));
 }
 
-async function reset() {
+async function resetExtractedList() {
     extractedEmails = [];
-    // מחיקה מה-storage
     await chrome.storage.local.set({ extractedEmails });
     updateEmailsList();
+    updateStats();
+}
+
+async function resetIgnoreList() {
+    ignoredEmails = [];
+    await chrome.storage.local.set({ ignoredEmails });
+    updateIgnoreList();
     updateStats();
 }
 

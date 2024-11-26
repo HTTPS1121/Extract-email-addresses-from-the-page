@@ -45,7 +45,7 @@
                     <div>סה"כ רשומות</div>
                 </div>
             </div>
-            <div class="buttons">
+            <div class="buttons emails-buttons">
                 <button class="btn" onclick="extractEmails()">חלץ מיילים</button>
                 <button class="btn" onclick="copyToClipboard()">העתק ללוח</button>
                 <button class="btn" onclick="reset()">איפוס</button>
@@ -64,9 +64,12 @@
                 <div class="input-wrapper">
                     <input type="text" id="ignore-input" 
                            placeholder="הכנס כתובות אימייל להחרגה">
-                    <div class="tooltip">פסיק להפרדה בין כתובות</div>
+                           <div class="tooltip">פסיק להפרדה בין כתובות</div>
                 </div>
-                <button class="btn" onclick="addToIgnoreList()">הוסף</button>
+                <div class="buttons ignore-buttons">
+                    <button class="btn">הוסף</button>
+                    <button class="btn">איפוס</button>
+                </div>
             </div>
         </div>
     </div>
