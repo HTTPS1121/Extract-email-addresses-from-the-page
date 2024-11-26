@@ -248,31 +248,44 @@ body {
     padding: 1rem;
     border: 1px solid var(--border);
     scrollbar-width: thin;
-    scrollbar-color: var(--primary) var(--glass);
+    scrollbar-color: var(--primaryT) transparent;
     padding-right: calc(1rem - 2px);
     margin-right: 2px;
+    overflow-x: hidden;
 }
 
 .list-area::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 .list-area::-webkit-scrollbar-track {
-    background: var(--glass);
-    border-radius: 10px;
+    background: transparent;
+    margin: 4px 0;
 }
 
 .list-area::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 10px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
+    background: var(--primaryT);
+    border-radius: 100px;
+    border: none;
+    transition: background 0.2s ease;
 }
 
 .list-area::-webkit-scrollbar-thumb:hover {
     background: var(--primary);
-    border: 1px solid transparent;
+}
+
+.list-area::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to top, var(--glass), transparent);
+    pointer-events: none;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
 }
 
 .email-item {
