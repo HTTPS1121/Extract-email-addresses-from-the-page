@@ -88,12 +88,21 @@ async function addToIgnoreList() {
     const input = document.getElementById('ignore-input').value;
     if (!input.trim()) return;
 
-    const emails = input
-        .split(/[\n,]/)
-        .map(email => email.trim())
-        .filter(email => email);
+    // רגקס לבדיקת תקינות כתובת מייל
+    const emailRegex = /^[\w\.-]+@[\w\.-]+\.\w+$/;
     
-    const newEmails = emails.filter(email => !ignoredEmails.includes(email));
+    // פיצול לפי רווחים ו/או שורות חדשות
+    const potentialEmails = input
+        .split(/[\s]+/)
+        .map(email => email.trim())
+        .filter(email => email && emailRegex.test(email));
+    
+    if (potentialEmails.length === 0) return;
+    
+    // סינון כפילויות מהרשימה הקיימת
+    const newEmails = potentialEmails.filter(email => !ignoredEmails.includes(email));
+    if (newEmails.length === 0) return;
+    
     ignoredEmails.push(...newEmails);
     
     // שמירה ב-storage
