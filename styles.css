@@ -247,6 +247,32 @@ body {
     border-radius: 16px;
     padding: 1rem;
     border: 1px solid var(--border);
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--glass);
+    padding-right: calc(1rem - 2px);
+    margin-right: 2px;
+}
+
+.list-area::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.list-area::-webkit-scrollbar-track {
+    background: var(--glass);
+    border-radius: 10px;
+}
+
+.list-area::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.list-area::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+    border: 1px solid transparent;
 }
 
 .email-item {
