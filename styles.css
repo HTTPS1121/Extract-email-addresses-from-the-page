@@ -259,6 +259,26 @@ body {
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.email-item:hover {
+    border-color: var(--primary);
+}
+
+.email-edit {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    font-size: inherit;
+    background: var(--glass);
+    color: inherit;
+    outline: none;
+}
+
+.email-text {
+    flex: 1;
 }
 
 .stats {

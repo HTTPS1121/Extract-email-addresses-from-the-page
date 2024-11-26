@@ -103,16 +103,76 @@ async function removeFromIgnoreList(email) {
 }
 
 function updateEmailsList() {
-    const list = document.getElementById('emails-list');
-    if (extractedEmails.length === 0) {
-        list.innerHTML = '<div class="empty-state">לחץ על "חלץ מיילים" כדי להתחיל</div>';
+    const listElement = document.getElementById('emails-list');
+    listElement.innerHTML = '';
+    
+    extractedEmails.forEach((email, index) => {
+        const div = document.createElement('div');
+        div.className = 'email-item';
+        div.innerHTML = `<span class="email-text">${email}</span>`;
+        
+        div.addEventListener('click', function(e) {
+            if (e.target.classList.contains('editing')) return;
+            
+            const span = div.querySelector('.email-text');
+            const originalText = span.textContent;
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = originalText;
+            input.className = 'email-edit editing';
+            
+            span.replaceWith(input);
+            input.focus();
+            
+            // טיפול בשמירה/ביטול עם מקשי מקלדת
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // מניעת שבירת שורה
+                    handleEdit(input, index, originalText);
+                } else if (e.key === 'Escape') {
+                    handleEdit(input, index, originalText, true);
+                }
+            });
+            
+            // טיפול בלחיצה מחוץ לשדה
+            input.addEventListener('blur', function() {
+                handleEdit(input, index, originalText);
+            });
+        });
+        
+        listElement.appendChild(div);
+    });
+}
+
+// פונקציה מאוחדת לטיפול בעריכה
+function handleEdit(input, index, originalText, isCancel = false) {
+    const newValue = input.value.trim();
+    
+    // אם זה ביטול או שהערך ריק - נחזיר את הערך המקורי
+    if (isCancel || !newValue) {
+        const span = document.createElement('span');
+        span.className = 'email-text';
+        span.textContent = originalText;
+        input.replaceWith(span);
         return;
     }
-    list.innerHTML = extractedEmails.map(email => `
-        <div class="email-item" onclick="showEdit(event, '${email}')">
-            ${email}
-        </div>
-    `).join('');
+    
+    // עדכון הערך אם הוא שונה מהמקורי
+    if (newValue !== originalText) {
+        extractedEmails[index] = newValue;
+        const span = document.createElement('span');
+        span.className = 'email-text';
+        span.textContent = newValue;
+        input.replaceWith(span);
+        updateStats(); // עדכון הסטטיסטיקות אם צריך
+    } else {
+        // אם אין שינוי - פשוט נחזיר את הטקסט המקורי
+        const span = document.createElement('span');
+        span.className = 'email-text';
+        span.textContent = originalText;
+        input.replaceWith(span);
+    }
 }
 
 function updateIgnoreList() {
