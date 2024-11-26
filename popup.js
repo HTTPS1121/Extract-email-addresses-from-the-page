@@ -5,9 +5,15 @@ let currentEditingEmail = null;
 // טעינת הנתונים בעת פתיחת הפופאפ
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // טעינת רשימת ההתעלמות מהאחסון
-        const result = await chrome.storage.local.get('ignoredEmails');
+        // טעינת רל הנתונים מהאחסון
+        const result = await chrome.storage.local.get(['ignoredEmails', 'extractedEmails']);
         ignoredEmails = result.ignoredEmails || [];
+        extractedEmails = result.extractedEmails || [];
+        
+        // עדכון התצוגה
+        updateEmailsList();
+        updateIgnoreList();
+        updateStats();
         
         // טעינת ערכת הנושא
         const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -44,11 +50,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         });
-        
-        // עדכון התצוגה הראשונית
-        updateEmailsList();
-        updateIgnoreList();
-        updateStats();
     } catch (error) {
         console.error('Error initializing popup:', error);
     }
@@ -66,7 +67,15 @@ async function extractEmails() {
         const response = await chrome.tabs.sendMessage(tab.id, { action: "extractEmails" });
         
         if (response && response.emails) {
-            extractedEmails = response.emails.filter(email => !ignoredEmails.includes(email));
+            // הוספת המיילים החדשים לרשימה הקיימת
+            const newEmails = response.emails.filter(email => 
+                !ignoredEmails.includes(email) && !extractedEmails.includes(email)
+            );
+            extractedEmails.push(...newEmails);
+            
+            // שמירה ב-storage
+            await chrome.storage.local.set({ extractedEmails });
+            
             updateEmailsList();
             updateStats();
         }
@@ -149,7 +158,6 @@ function updateEmailsList() {
 function handleEdit(input, index, originalText, isCancel = false) {
     const newValue = input.value.trim();
     
-    // אם זה ביטול או שהערך ריק - נחזיר את הערך המקורי
     if (isCancel || !newValue) {
         const span = document.createElement('span');
         span.className = 'email-text';
@@ -158,16 +166,17 @@ function handleEdit(input, index, originalText, isCancel = false) {
         return;
     }
     
-    // עדכון הערך אם הוא שונה מהמקורי
     if (newValue !== originalText) {
         extractedEmails[index] = newValue;
+        // שמירה ב-storage
+        chrome.storage.local.set({ extractedEmails });
+        
         const span = document.createElement('span');
         span.className = 'email-text';
         span.textContent = newValue;
         input.replaceWith(span);
-        updateStats(); // עדכון הסטטיסטיקות אם צריך
+        updateStats();
     } else {
-        // אם אין שינוי - פשוט נחזיר את הטקסט המקורי
         const span = document.createElement('span');
         span.className = 'email-text';
         span.textContent = originalText;
@@ -336,8 +345,10 @@ function copyToClipboard() {
         .catch(err => console.error('Error copying to clipboard:', err));
 }
 
-function reset() {
+async function reset() {
     extractedEmails = [];
+    // מחיקה מה-storage
+    await chrome.storage.local.set({ extractedEmails });
     updateEmailsList();
     updateStats();
 }
