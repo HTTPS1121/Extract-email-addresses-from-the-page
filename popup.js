@@ -181,12 +181,92 @@ function updateIgnoreList() {
         list.innerHTML = '<div class="empty-state">הכנס כתובות מייל להתעלמות</div>';
         return;
     }
-    list.innerHTML = ignoredEmails.map(email => `
-        <div class="email-item">
-            ${email}
-            <button class="remove-btn" onclick="removeFromIgnoreList('${email}')">הסר</button>
-        </div>
-    `).join('');
+    
+    list.innerHTML = ''; // ניקוי הרשימה
+    
+    // יצירת האלמנטים בצורה תכנותית
+    ignoredEmails.forEach((email, index) => {
+        const div = document.createElement('div');
+        div.className = 'email-item';
+        
+        // הוספת הטקסט עם אפשרות עריכה
+        const span = document.createElement('span');
+        span.className = 'email-text';
+        span.textContent = email;
+        
+        // כפתור הסרה
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-btn';
+        removeBtn.textContent = 'הסר';
+        removeBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // מניעת הפעלת אירוע העריכה
+            removeFromIgnoreList(email);
+        });
+        
+        div.appendChild(span);
+        div.appendChild(removeBtn);
+        
+        // הוספת פונקציונליות העריכה
+        div.addEventListener('click', function(e) {
+            if (e.target.classList.contains('editing') || e.target === removeBtn) return;
+            
+            const span = div.querySelector('.email-text');
+            const originalText = span.textContent;
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = originalText;
+            input.className = 'email-edit editing';
+            
+            span.replaceWith(input);
+            input.focus();
+            
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleIgnoreEdit(input, index, originalText);
+                } else if (e.key === 'Escape') {
+                    handleIgnoreEdit(input, index, originalText, true);
+                }
+            });
+            
+            input.addEventListener('blur', function() {
+                handleIgnoreEdit(input, index, originalText);
+            });
+        });
+        
+        list.appendChild(div);
+    });
+}
+
+// פונקציה לטיפול בעריכת כתובת מוחרגת
+function handleIgnoreEdit(input, index, originalText, isCancel = false) {
+    const newValue = input.value.trim();
+    
+    if (isCancel || !newValue) {
+        const span = document.createElement('span');
+        span.className = 'email-text';
+        span.textContent = originalText;
+        input.replaceWith(span);
+        return;
+    }
+    
+    if (newValue !== originalText) {
+        ignoredEmails[index] = newValue;
+        // שמירה ב-storage
+        chrome.storage.local.set({ ignoredEmails });
+        
+        const span = document.createElement('span');
+        span.className = 'email-text';
+        span.textContent = newValue;
+        input.replaceWith(span);
+        updateStats();
+    } else {
+        const span = document.createElement('span');
+        span.className = 'email-text';
+        span.textContent = originalText;
+        input.replaceWith(span);
+    }
 }
 
 function updateStats() {
