@@ -295,25 +295,68 @@ function handleIgnoreEdit(input, index, originalText, isCancel = false) {
     }
 }
 
+function animateValue(element, start, end, duration = 300) {
+    start = parseInt(start) || 0;
+    end = parseInt(end) || 0;
+    
+    if (start === end) return;
+    
+    // מתחילים מיד עם הערך הראשון
+    element.textContent = start;
+    element.style.transform = 'scale(1.2)';
+    
+    const steps = Math.min(Math.abs(end - start), 30);
+    const stepValue = (end - start) / steps;
+    const stepTime = duration / steps;
+    
+    let current = start;
+    
+    // מתחילים את האנימציה מיד בפריים הבא
+    requestAnimationFrame(() => {
+        const timer = setInterval(() => {
+            current += stepValue;
+            const displayValue = Math.round(current);
+            
+            element.textContent = displayValue;
+            element.style.transform = 'scale(1.2)';
+            
+            requestAnimationFrame(() => {
+                element.style.transform = 'scale(1)';
+            });
+            
+            if ((stepValue > 0 && current >= end) || (stepValue < 0 && current <= end)) {
+                element.textContent = end;
+                clearInterval(timer);
+            }
+        }, stepTime);
+    });
+}
+
 function updateStats() {
-    document.getElementById('extracted-count').textContent = extractedEmails.length;
-    document.getElementById('total-count').textContent = extractedEmails.length;
-    document.getElementById('ignored-count').textContent = ignoredEmails.length;
+    const extractedBadge = document.getElementById('extracted-badge');
+    const ignoredBadge = document.getElementById('ignored-badge');
+    
+    const oldExtracted = parseInt(extractedBadge.textContent) || 0;
+    const oldIgnored = parseInt(ignoredBadge.textContent) || 0;
+    
+    if (oldExtracted !== extractedEmails.length) {
+        animateValue(extractedBadge, oldExtracted, extractedEmails.length);
+    }
+    
+    if (oldIgnored !== ignoredEmails.length) {
+        animateValue(ignoredBadge, oldIgnored, ignoredEmails.length);
+    }
 }
 
 function switchTab(tab) {
-    // הסרת הקלאס active מכל הטאבים
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     
-    // הסתרת כל התוכן
     document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
     
     if (tab === 'emails') {
-        // הפעלת טאב האימיילים
         document.querySelector('.tab:first-child').classList.add('active');
         document.getElementById('emails-content').style.display = 'flex';
     } else {
-        // הפעלת טאב ההתעלמות
         document.querySelector('.tab:last-child').classList.add('active');
         document.getElementById('ignore-content').style.display = 'flex';
     }

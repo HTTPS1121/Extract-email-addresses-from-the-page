@@ -29,22 +29,18 @@
     </label>
     <div class="main-container">
         <div class="tabs">
-            <div class="tab active" data-tab="emails"><span>חילוץ אימיילים</span></div>
-            <div class="tab" data-tab="ignore"><span>רשימת התעלמות</span></div>
+            <div class="tab active" data-tab="emails">
+                <span>חילוץ אימיילים</span>
+                <div class="badge" id="extracted-badge">0</div>
+            </div>
+            <div class="tab" data-tab="ignore">
+                <span>רשימת התעלמות</span>
+                <div class="badge" id="ignored-badge">0</div>
+            </div>
         </div>
         
         <div class="content" id="emails-content">
             <div class="list-area" id="emails-list"></div>
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="extracted-count">0</div>
-                    <div>אימיילים שחולצו</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="total-count">0</div>
-                    <div>סה"כ רשומות</div>
-                </div>
-            </div>
             <div class="buttons emails-buttons">
                 <button class="btn" data-action="extract">חלץ מיילים</button>
                 <button class="btn" data-action="copy">העתק ללוח</button>
@@ -54,12 +50,6 @@
 
         <div class="content" id="ignore-content" style="display: none;">
             <div class="list-area" id="ignore-list"></div>
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="ignored-count">0</div>
-                    <div>מיילים מוחרגים</div>
-                </div>
-            </div>
             <div class="input-row">
                 <div class="input-wrapper">
                     <input type="text" id="ignore-input" 
