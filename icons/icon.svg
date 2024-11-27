@@ -1,6 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
-    <rect width="128" height="128" rx="24" fill="#6366f1"/>
-    <path d="M24 44v40c0 11.046 8.954 20 20 20h40c11.046 0 20-8.954 20-20V44c0-11.046-8.954-20-20-20H44c-11.046 0-20 8.954-20 20z" fill="white"/>
-    <path d="M64 70L34 45h60L64 70z" fill="#6366f1"/>
-    <path d="M34 85V50l20 16.7L64 75l10-8.3L94 50v35H34z" fill="#6366f1"/>
+    <!-- רקע -->
+    <rect x="0" y="0" width="128" height="128" rx="24" fill="url(#iconGradient)" />
+    
+    <!-- דף אינטרנט סכמטי -->
+    <rect x="24" y="24" width="80" height="80" 
+          fill="white" 
+          fill-opacity="0.9"
+          rx="8"/>
+    
+    <!-- קווי טקסט סכמטיים -->
+    <path d="M34 40H74M34 52H94M34 64H84" 
+          stroke="#4f46e5" 
+          stroke-width="6"
+          stroke-linecap="round"/>
+    
+    <!-- אימיילים מודגשים -->
+    <text x="44" y="82" 
+          font-family="monospace" 
+          font-size="10" 
+          fill="#6366f1" 
+          font-weight="bold">user@mail.com</text>
+    
+    <!-- זכוכית מגדלת -->
+    <circle cx="88" cy="88" r="24" 
+            fill="none" 
+            stroke="white" 
+            stroke-width="8"/>
+    <path d="M104 104L116 116" 
+          stroke="white" 
+          stroke-width="8" 
+          stroke-linecap="round"/>
+          
+    <!-- הגדרת הגרדיאנט -->
+    <defs>
+        <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#6366f1"/>
+            <stop offset="100%" style="stop-color:#4f46e5"/>
+        </linearGradient>
+    </defs>
 </svg> 

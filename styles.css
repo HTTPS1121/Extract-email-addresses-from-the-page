@@ -17,6 +17,7 @@
     --light-sh: hsla(var(--hue),10%,95%,0.5);
     --dark-sh: hsla(var(--hue),10%,15%,0.4);
     --trans-dur: 0.3s;
+    --icon-gradient: linear-gradient(45deg, var(--primary), #4f46e5);
 }
 
 :root[data-theme="light"] {
