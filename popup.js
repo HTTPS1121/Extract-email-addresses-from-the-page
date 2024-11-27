@@ -19,40 +19,44 @@ document.addEventListener('DOMContentLoaded', async () => {
         const savedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
         
-        // הוספת מאזיני אירועים לכפתורים
+        // טיפול בלחיצות על טאבים
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                const tabName = tab.textContent.includes('חילוץ') ? 'emails' : 'ignore';
+                const tabName = tab.dataset.tab;
                 switchTab(tabName);
             });
         });
 
-        // הוספת מאזין אירועים לכפתור החלפת ערכת נושא
-        document.querySelector('.theme-toggle').addEventListener('click', toggleTheme);
-        
-        // הוספת מאזיני אירועים לכפתורי הפעולה
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const action = e.target.textContent;
-                switch(action) {
-                    case 'חלץ מיילים':
-                        extractEmails();
-                        break;
-                    case 'העתק ללוח':
-                        copyToClipboard();
-                        break;
-                    case 'איפוס':
-                        if (document.querySelector('.tab.active').textContent.includes('חילוץ')) {
-                            resetExtractedList();
-                        } else {
-                            resetIgnoreList();
-                        }
-                        break;
-                    case 'הוסף':
-                        addToIgnoreList();
-                        break;
-                }
-            });
+        // טיפול בלחיצות על כפתורים
+        document.addEventListener('click', (e) => {
+            const button = e.target.closest('.btn');
+            if (!button) return;
+
+            const action = button.dataset.action;
+            switch(action) {
+                case 'extract':
+                    extractEmails();
+                    break;
+                case 'copy':
+                    copyToClipboard();
+                    break;
+                case 'reset':
+                    if (document.querySelector('.tab.active').dataset.tab === 'emails') {
+                        resetExtractedList();
+                    } else {
+                        resetIgnoreList();
+                    }
+                    break;
+                case 'save':
+                    saveEdit();
+                    break;
+                case 'cancel':
+                    closeEdit();
+                    break;
+                case 'add':
+                    addToIgnoreList();
+                    break;
+            }
         });
     } catch (error) {
         console.error('Error initializing popup:', error);

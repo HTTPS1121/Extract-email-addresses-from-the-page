@@ -29,8 +29,8 @@
     </label>
     <div class="main-container">
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('emails')"><span>חילוץ אימיילים</span></div>
-            <div class="tab" onclick="switchTab('ignore')"><span>רשימת התעלמות</span></div>
+            <div class="tab active" data-tab="emails"><span>חילוץ אימיילים</span></div>
+            <div class="tab" data-tab="ignore"><span>רשימת התעלמות</span></div>
         </div>
         
         <div class="content" id="emails-content">
@@ -46,9 +46,9 @@
                 </div>
             </div>
             <div class="buttons emails-buttons">
-                <button class="btn" onclick="extractEmails()">חלץ מיילים</button>
-                <button class="btn" onclick="copyToClipboard()">העתק ללוח</button>
-                <button class="btn" onclick="reset()">איפוס</button>
+                <button class="btn" data-action="extract">חלץ מיילים</button>
+                <button class="btn" data-action="copy">העתק ללוח</button>
+                <button class="btn" data-action="reset">איפוס</button>
             </div>
         </div>
 
@@ -67,8 +67,8 @@
                            <div class="tooltip">פסיק להפרדה בין כתובות</div>
                 </div>
                 <div class="buttons ignore-buttons">
-                    <button class="btn">הוסף</button>
-                    <button class="btn">איפוס</button>
+                    <button class="btn" data-action="add">הוסף</button>
+                    <button class="btn" data-action="reset">איפוס</button>
                 </div>
             </div>
         </div>
@@ -77,8 +77,8 @@
     <div class="floating-edit" id="edit-popup">
         <input type="text" id="edit-input">
         <div class="buttons">
-            <button class="btn" onclick="saveEdit()">שמור</button>
-            <button class="btn" onclick="closeEdit()">ביטול</button>
+            <button class="btn" data-action="save">שמור</button>
+            <button class="btn" data-action="cancel">ביטול</button>
         </div>
     </div>
     <script src="popup.js"></script>
