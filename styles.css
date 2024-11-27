@@ -166,9 +166,9 @@ body {
 
 .tabs {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     margin-bottom: 1rem;
-    padding: 0.5rem;
+    padding: 0.35rem;
     background: var(--glass);
     border-radius: 16px;
     flex-wrap: nowrap;
@@ -177,7 +177,7 @@ body {
 
 .tab {
     flex: 1;
-    padding: 0.75rem;
+    padding: 6px 12px;
     text-align: center;
     border-radius: 12px;
     cursor: pointer;
@@ -192,7 +192,7 @@ body {
 
 .tab span {
     position: relative;
-    font-size: 1rem;
+    font-size: 0.9rem;
     transition: 0.3s ease-out;
 }
 
@@ -230,7 +230,7 @@ body {
     display: none;
 }
 
-/* מסיר סטיילים קודמים שלא בשימוש */
+/* מסיר סטיילים מים שלא בשימוש */
 .tab::before {
     display: none;
 }
@@ -295,7 +295,7 @@ body {
 
 .email-item {
     background: var(--glass);
-    padding: 1rem;
+    padding: 0.75rem 1rem;
     border-radius: 12px;
     margin-bottom: 0.75rem;
     border: 1px solid var(--border);
@@ -304,6 +304,8 @@ body {
     align-items: center;
     cursor: pointer;
     transition: all 0.2s ease;
+    height: 42px;
+    box-sizing: border-box;
 }
 
 .email-item:hover {
@@ -323,6 +325,10 @@ body {
 
 .email-text {
     flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
 }
 
 .stats {
@@ -348,12 +354,12 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.75rem;
-    height: 42px;
+    height: 38px;
 }
 
 .btn {
     height: 100%;
-    padding: 0;
+    padding: 0 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -364,7 +370,7 @@ body {
     cursor: pointer;
     position: relative;
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 0.9rem;
     box-shadow: 4px 8px 19px -3px var(--shadow);
     transition: all 250ms;
     overflow: hidden;
@@ -399,10 +405,18 @@ body {
 }
 
 .input-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0.5rem;
-    height: 42px;
+    display: flex;
+    width: 100%;
+    height: 38px;
+    gap: 8px;
+}
+
+.input-wrapper {
+    flex: 1;
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .input-row textarea {
@@ -441,17 +455,26 @@ body {
     color: var(--text-secondary);
     text-align: center;
     padding: 2rem;
+    font-size: 0.95rem;
+}
+
+.empty-state strong {
+    color: var(--primary);
+    font-weight: 500;
 }
 
 .remove-btn {
     background: #ef4444;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.25rem 0.75rem;
     border-radius: 8px;
     cursor: pointer;
     font-family: 'Heebo', sans-serif;
     font-size: 0.875rem;
+    height: 28px;
+    line-height: 1;
+    margin-right: 0.5rem;
 }
 
 .remove-btn:hover {
@@ -536,7 +559,8 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-    grid-column: span 2;
+    display: flex;
+    align-items: center;
 }
 
 .tooltip {
@@ -586,7 +610,34 @@ body {
 }
 
 .emails-buttons {
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    height: 38px;
+}
+
+.emails-buttons .btn {
+    height: 100%;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.emails-buttons .btn .icon {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+.emails-buttons .btn:hover {
+    transform: translateY(-2px);
+}
+
+.emails-buttons .btn span {
+    display: inline-block;
 }
 
 .ignore-buttons {
@@ -599,15 +650,15 @@ body {
 
 .badge {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: -6px;
+    right: -6px;
     background: var(--primaryT);
     color: var(--text);
     border-radius: 12px;
-    padding: 2px 6px;
-    font-size: 12px;
-    min-width: 20px;
-    height: 20px;
+    padding: 2px 4px;
+    font-size: 11px;
+    min-width: 18px;
+    height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -615,6 +666,7 @@ body {
     transition: transform 0.15s ease-out;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     border: 1px solid rgba(255,255,255,0.1);
+    display: none;
 }
 
 @keyframes glow {
@@ -628,6 +680,291 @@ body {
 }
 
 .tab {
+    padding: 6px 12px;
+    margin-bottom: 0;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+    vertical-align: -2px;
+    transition: all 0.3s ease;
+}
+
+.tab .icon {
+    width: 14px;
+    height: 14px;
+    margin-left: 3px;
+}
+
+.btn:hover .icon {
+    transform: scale(1.1);
+}
+
+.tab.active .icon {
+    color: white;
+}
+
+.tab:hover .icon {
+    color: var(--primary);
+}
+
+.tab.active:hover .icon {
+    color: white;
+}
+
+/* עדכון הכפתורים כדי להתאים לאייקונים */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+/* עדכון הטאבים */
+.tab span {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* סטיילינג לכפתורי אייקונים */
+.icon-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 8px;
+    color: var(--text);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    background: var(--glass);
+    color: var(--primary);
+}
+
+.icon-btn.delete {
+    background: var(--glass);
+    padding: 6px;
+    border-radius: 8px;
+    color: var(--text);
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+}
+
+.icon-btn.delete:hover {
+    background: var(--primaryT);
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+.input-actions {
+    position: absolute;
+    left: 8px;
+    display: flex;
+    gap: 4px;
+    z-index: 1;
+}
+
+.input-wrapper input {
+    width: 100%;
+    height: 100%;
+    padding: 0 0.75rem 0 80px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: 'Heebo', sans-serif;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* סטיילינג להודעת ההעתקה */
+.notification {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: white;
     padding: 8px 16px;
-    margin-bottom: 8px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    animation: slide-up 0.3s ease;
+    z-index: 1000;
+}
+
+.notification.fade-out {
+    animation: slide-down 0.3s ease forwards;
+}
+
+@keyframes slide-up {
+    from {
+        transform: translate(-50%, 100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-down {
+    from {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+    to {
+        transform: translate(-50%, 100%);
+        opacity: 0;
+    }
+}
+
+/* עדכון שדה הקלט */
+.input-wrapper input {
+    padding-left: 80px; /* מקום לאייקונים */
+}
+
+.reset-btn {
+    background: var(--glass) !important;
+    color: var(--text) !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+    position: relative;
+}
+
+.reset-btn:hover {
+    background: rgba(239, 68, 68, 0.2) !important;
+    transform: scale(1.05);
+}
+
+.reset-btn .icon {
+    width: 18px;
+    height: 18px;
+}
+
+.emails-buttons .btn {
+    width: auto;
+    padding: 0 12px;
+}
+
+.emails-buttons .btn span {
+    display: inline-block;
+}
+
+.emails-buttons .btn .icon {
+    margin: 0;
+    width: 18px;
+    height: 18px;
+}
+
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 10px;
+    background: var(--primary);
+    color: white;
+    font-size: 12px;
+    white-space: nowrap;
+    border-radius: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+[data-tooltip]:hover:before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-4px);
+} 
+
+/* תיקון הטולטיפ של שדה הקלט */
+.input-wrapper .tooltip {
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+/* הצגת הטולטיפ רק כשהעכבר על שדה הקלט עצמו ולא על האייקונים */
+.input-wrapper:hover > .tooltip {
+    opacity: 1;
+}
+
+/* מניעת הצגת הטולטיפ כשהעכבר על האייקונים */
+.input-wrapper:has(.input-actions:hover) .tooltip {
+    opacity: 0;
+}
+
+/* עדכון כפתור האיפו */
+.reset-btn {
+    background: var(--glass) !important;
+    color: var(--text) !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+    position: relative;
+}
+
+.reset-btn:hover {
+    background: var(--primaryT) !important;
+    color: var(--primary) !important;
+    transform: scale(1.05);
+}
+
+/* תיקון מיקום הטולטיפים כך שתמיד יהיו גלויים */
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    padding: 6px 10px;
+    background: var(--primary);
+    color: white;
+    font-size: 12px;
+    white-space: nowrap;
+    border-radius: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 1000; /* הוספת z-index גבוה */
+}
+
+/* וידוא שהטולטיפ לא ייחתך בקצוות */
+[data-tooltip] {
+    position: relative;
+    overflow: visible;
+}
+
+/* התאמת מיקום הטולטיפ לכפתורים בקצוות */
+.emails-buttons .btn:first-child[data-tooltip]:before {
+    transform: translateX(0);
+    left: 0;
+}
+
+.emails-buttons .btn:last-child[data-tooltip]:before {
+    transform: translateX(-100%);
+    left: 100%;
+}
+
+[data-tooltip]:hover:before {
+    opacity: 1;
+    visibility: visible;
 } 
