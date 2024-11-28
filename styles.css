@@ -72,6 +72,7 @@ body {
     left: 1rem;
     z-index: 1000;
     transform: scale(0.8);
+    direction: ltr !important;
 }
 
 .theme-toggle input {
@@ -100,7 +101,7 @@ body {
     mix-blend-mode: multiply;
     border-radius: 50%;
     top: 4px;
-    left: 4px;
+    right: 4px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     z-index: 1;
@@ -111,6 +112,7 @@ body {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 0 12px;
@@ -134,9 +136,9 @@ body {
 .moon-icon { opacity: 1; }
 
 .theme-toggle input:checked + .theme-toggle-slider::after {
-    left: calc(100% - 41px);
+    right: calc(100% - 41px);
+    left: auto;
     background: linear-gradient(45deg, var(--primary), #4f46e5);
-    opacity: 0.85;
 }
 
 .theme-toggle input:checked + .theme-toggle-slider .sun-icon {
@@ -160,7 +162,7 @@ body {
 }
 
 :root[data-theme="light"] .theme-toggle-slider::after {
-    background: linear-gradient(45deg, #fbbf24, #f59e0b);
+    background: linear-gradient(45deg, var(--primary), #4f46e5);
     mix-blend-mode: screen;
 }
 
@@ -230,7 +232,7 @@ body {
     display: none;
 }
 
-/* מסיר סטיילים מים שלא בשימוש */
+/* מסיר סטיילים שלא בשימוש */
 .tab::before {
     display: none;
 }
@@ -787,8 +789,8 @@ body {
 
 /* סטיילינג להודעת ההעתקה */
 .notification {
-    position: fixed;
-    bottom: 24px;
+    position: absolute;
+    top: 80px;
     left: 50%;
     transform: translateX(-50%);
     background: var(--primary);
@@ -797,17 +799,17 @@ body {
     border-radius: 8px;
     font-size: 0.9rem;
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-    animation: slide-up 0.3s ease;
+    animation: slide-down 0.3s ease;
     z-index: 1000;
 }
 
 .notification.fade-out {
-    animation: slide-down 0.3s ease forwards;
+    animation: slide-up 0.3s ease forwards;
 }
 
-@keyframes slide-up {
+@keyframes slide-down {
     from {
-        transform: translate(-50%, 100%);
+        transform: translate(-50%, -100%);
         opacity: 0;
     }
     to {
@@ -816,13 +818,13 @@ body {
     }
 }
 
-@keyframes slide-down {
+@keyframes slide-up {
     from {
         transform: translate(-50%, 0);
         opacity: 1;
     }
     to {
-        transform: translate(-50%, 100%);
+        transform: translate(-50%, -100%);
         opacity: 0;
     }
 }
@@ -967,4 +969,115 @@ body {
 [data-tooltip]:hover:before {
     opacity: 1;
     visibility: visible;
+} 
+
+/* סטיילינג למתג שפה */
+.lang-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    transform: scale(0.8);
+    direction: ltr !important;
+}
+
+.lang-toggle input {
+    display: none;
+}
+
+.lang-toggle-slider {
+    position: relative;
+    width: 100px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.lang-toggle-slider::after {
+    content: '';
+    position: absolute;
+    width: 37px;
+    height: 37px;
+    background: linear-gradient(45deg, var(--primary), #4f46e5);
+    mix-blend-mode: multiply;
+    border-radius: 50%;
+    top: 4px;
+    right: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 1;
+}
+
+.lang-toggle-icons {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    pointer-events: none;
+    direction: ltr !important;
+}
+
+.lang-toggle-icons span {
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    transition: all 0.3s ease;
+    mix-blend-mode: screen;
+    filter: brightness(1.5);
+    z-index: 2;
+}
+
+.en-icon { opacity: 0.25; }
+.he-icon { opacity: 1; }
+
+.lang-toggle input:checked + .lang-toggle-slider::after {
+    right: calc(100% - 41px);
+    left: auto;
+}
+
+.lang-toggle input:checked + .lang-toggle-slider .en-icon {
+    opacity: 1;
+}
+
+.lang-toggle input:checked + .lang-toggle-slider .he-icon {
+    opacity: 0.25;
+}
+
+/* עדכון למצב בהיר */
+:root[data-theme="light"] .lang-toggle-icons span {
+    color: #1e293b;
+    mix-blend-mode: multiply;
+}
+
+:root[data-theme="light"] .lang-toggle-slider {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+} 
+
+/* הוספת סלקטור שמתייחס לכיוון השפה */
+[dir="rtl"] .input-actions {
+    left: 8px;
+    right: auto;
+}
+
+[dir="ltr"] .input-actions {
+    right: 8px;
+    left: auto;
+}
+
+/* עדכון הפדינג של שדה הקלט בהתאם לכיוון */
+[dir="rtl"] .input-wrapper input {
+    padding: 0 0.75rem 0 80px;
+}
+
+[dir="ltr"] .input-wrapper input {
+    padding: 0 80px 0 0.75rem;
 } 

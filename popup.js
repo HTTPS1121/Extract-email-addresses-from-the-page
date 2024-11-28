@@ -1,6 +1,7 @@
 let extractedEmails = [];
 let ignoredEmails = [];
 let currentEditingEmail = null;
+let currentLanguage = navigator.language.startsWith('he') ? 'he' : 'en';
 
 // טעינת הנתונים בעת פתיחת הפופאפ
 document.addEventListener('DOMContentLoaded', async () => {
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // טיפול בלחיצות על כפתורים
         document.addEventListener('click', (e) => {
-            const button = e.target.closest('.btn');
+            const button = e.target.closest('.btn, .icon-btn');
             if (!button) return;
 
             const action = button.dataset.action;
@@ -58,6 +59,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                     break;
             }
         });
+
+        // אתחול מצב השפה
+        const savedLanguage = localStorage.getItem('language') || (navigator.language.startsWith('he') ? 'he' : 'en');
+        currentLanguage = savedLanguage;
+        const langToggle = document.getElementById('language');
+        langToggle.checked = currentLanguage === 'en';
+        document.documentElement.setAttribute('data-lang', currentLanguage);
+        updateUILanguage(currentLanguage);
+        langToggle.addEventListener('change', toggleLanguage);
     } catch (error) {
         console.error('Error initializing popup:', error);
     }
@@ -130,9 +140,10 @@ async function removeFromIgnoreList(email) {
 
 function updateEmailsList() {
     const listElement = document.getElementById('emails-list');
+    const t = translations[currentLanguage];
     
     if (extractedEmails.length === 0) {
-        listElement.innerHTML = '<div class="empty-state">לחץ על <strong>חלץ מיילים</strong> כדי להתחיל</div>';
+        listElement.innerHTML = `<div class="empty-state">${t.emptyExtracted}</div>`;
         return;
     }
     
@@ -209,9 +220,10 @@ function handleEdit(input, index, originalText, isCancel = false) {
 
 function updateIgnoreList() {
     const list = document.getElementById('ignore-list');
+    const t = translations[currentLanguage];
     
     if (ignoredEmails.length === 0) {
-        list.innerHTML = '<div class="empty-state">הכנס כתובות מייל להחרגה</div>';
+        list.innerHTML = `<div class="empty-state">${t.emptyIgnored}</div>`;
         return;
     }
     
@@ -275,7 +287,7 @@ function updateIgnoreList() {
     });
 }
 
-// פונקציה לטיפול בעריכת כתובת מוחרגת
+// פונקציה לטיפול בעריכ כתובת מוחרגת
 function handleIgnoreEdit(input, index, originalText, isCancel = false) {
     const newValue = input.value.trim();
     
@@ -414,12 +426,14 @@ function saveEdit() {
 }
 
 function copyToClipboard() {
+    const t = translations[currentLanguage];
+    
     navigator.clipboard.writeText(extractedEmails.join('\n'))
         .then(() => {
             // הצגת הודעה נייטיבית
             const notification = document.createElement('div');
             notification.className = 'notification';
-            notification.textContent = 'הועתק ללוח!';
+            notification.textContent = t.copiedToClipboard;
             document.body.appendChild(notification);
             
             // הסרת ההודעה אחרי 2 שניות
@@ -466,5 +480,108 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.setAttribute('data-theme', savedTheme);
     themeToggle.addEventListener('change', toggleTheme);
 });
+
+// הוספת פונקציית החלפת שפה
+function toggleLanguage() {
+    const langToggle = document.getElementById('language');
+    currentLanguage = langToggle.checked ? 'en' : 'he';
+    document.documentElement.setAttribute('data-lang', currentLanguage);
+    localStorage.setItem('language', currentLanguage);
+    
+    // כאן תוכל להוסיף לוגיקה להחלפת הטקסטים בממשק
+    updateUILanguage(currentLanguage);
+}
+
+const translations = {
+    he: {
+        // טאבים
+        extractTab: 'חילוץ אימיילים',
+        ignoreTab: 'רשימת התעלמות',
+        
+        // כפתורים בטאב החילוץ
+        extract: 'חילוץ',
+        copy: 'העתקה',
+        reset: 'איפוס',
+        
+        // טאב החרגה
+        addToIgnore: 'הוסף לרשימת החרגה',
+        resetIgnore: 'איפוס רשימת החרגה',
+        inputPlaceholder: 'הכנס כתובת מייל להחרגה',
+        separatorHint: 'פסיק להפרדה בין כתובות',
+        
+        // הודעות
+        emptyExtracted: 'לחץ על <strong>חילוץ</strong> כדי להתחיל',
+        emptyIgnored: 'הכנס כתובות מייל להחרגה',
+        copiedToClipboard: 'הועתק!',
+        
+        // עריכה
+        save: 'שמור',
+        cancel: 'ביטול'
+    },
+    en: {
+        // Tabs
+        extractTab: 'Extract Emails',
+        ignoreTab: 'Ignore List',
+        
+        // Extract tab buttons
+        extract: 'Extract',
+        copy: 'Copy',
+        reset: 'Reset',
+        
+        // Ignore tab
+        addToIgnore: 'Add to Ignore List',
+        resetIgnore: 'Reset Ignore List',
+        inputPlaceholder: 'Enter email to ignore',
+        separatorHint: 'Use comma to separate emails',
+        
+        // Messages
+        emptyExtracted: 'Click <strong>Extract</strong> to start',
+        emptyIgnored: 'Enter emails to ignore',
+        copiedToClipboard: 'Copied!',
+        
+        // Edit
+        save: 'Save',
+        cancel: 'Cancel'
+    }
+};
+
+function updateUILanguage(lang) {
+    const t = translations[lang];
+    
+    // עדכון טאבים
+    document.querySelector('[data-tab="emails"] span').textContent = t.extractTab;
+    document.querySelector('[data-tab="ignore"] span').textContent = t.ignoreTab;
+    
+    // עדכון כפתורים בטאב החילוץ
+    document.querySelector('[data-action="extract"] span').textContent = t.extract;
+    document.querySelector('[data-action="copy"] span').textContent = t.copy;
+    document.querySelector('[data-action="reset"] span').textContent = t.reset;
+    
+    // עדכון טאב החרגה
+    document.querySelector('#ignore-input').placeholder = t.inputPlaceholder;
+    document.querySelector('.tooltip').textContent = t.separatorHint;
+    
+    // עדכון טולטיפים
+    document.querySelector('[data-action="add"]').setAttribute('data-tooltip', t.addToIgnore);
+    document.querySelector('.reset-btn').setAttribute('data-tooltip', t.resetIgnore);
+    
+    // עדכון הודעות ריקות
+    const emptyExtractedDiv = document.querySelector('#emails-list .empty-state');
+    if (emptyExtractedDiv) {
+        emptyExtractedDiv.innerHTML = t.emptyExtracted;
+    }
+    
+    const emptyIgnoredDiv = document.querySelector('#ignore-list .empty-state');
+    if (emptyIgnoredDiv) {
+        emptyIgnoredDiv.innerHTML = t.emptyIgnored;
+    }
+    
+    // עדכון פופאפ עריכה
+    document.querySelector('[data-action="save"]').textContent = t.save;
+    document.querySelector('[data-action="cancel"]').textContent = t.cancel;
+    
+    // שינוי כיוון הטקסט בהתאם לשפה
+    document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+}
 
 // שאר הפונקציות נשארות דומות... 
