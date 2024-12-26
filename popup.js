@@ -527,7 +527,7 @@ function toggleLanguage() {
     document.documentElement.setAttribute('data-lang', currentLanguage);
     localStorage.setItem('language', currentLanguage);
     
-    // כאן תוכל להוסיף לוגיקה להחלפת הטקסטים בממשק
+    // כאן תוכל להוסיף לוגיקה להחלפת הקסטים בממשק
     updateUILanguage(currentLanguage);
 }
 
@@ -541,6 +541,11 @@ const translations = {
         extract: 'חילוץ',
         copy: 'העתקה',
         reset: 'איפוס',
+        
+        // הוספה ידנית
+        manualInputPlaceholder: 'הכנס כתובות אימייל ידנית',
+        manualInputTooltip: 'רווח או פסיק להפרדה בין כתובות',
+        addManualTooltip: 'הוסף לרשימת המיילים',
         
         // טאב החרגה
         addToIgnore: 'הוסף לרשימת החרגה',
@@ -572,6 +577,11 @@ const translations = {
         extract: 'Extract',
         copy: 'Copy',
         reset: 'Reset',
+        
+        // Manual Input
+        manualInputPlaceholder: 'Enter email addresses manually',
+        manualInputTooltip: 'Use space or comma to separate emails',
+        addManualTooltip: 'Add to email list',
         
         // Ignore tab
         addToIgnore: 'Add to Ignore List',
@@ -608,9 +618,17 @@ function updateUILanguage(lang) {
     document.querySelector('[data-action="copy"] span').textContent = t.copy;
     document.querySelector('[data-action="reset"] span').textContent = t.reset;
     
+    // עדכון טדה הוספה ידנית
+    const manualInput = document.getElementById('manual-emails-input');
+    if (manualInput) {
+        manualInput.placeholder = t.manualInputPlaceholder;
+        manualInput.parentElement.querySelector('.tooltip').textContent = t.manualInputTooltip;
+        manualInput.parentElement.querySelector('[data-action="add-manual"]').setAttribute('data-tooltip', t.addManualTooltip);
+    }
+    
     // עדכון טאב החרגה
     document.querySelector('#ignore-input').placeholder = t.inputPlaceholder;
-    document.querySelector('.tooltip').textContent = t.separatorHint;
+    document.querySelector('#ignore-content .tooltip').textContent = t.separatorHint;
     
     // עדכון טולטיפים
     document.querySelector('[data-action="add"]').setAttribute('data-tooltip', t.addToIgnore);
@@ -642,7 +660,7 @@ async function addManualEmails() {
     // רגקס לבדיקת תקינות כתובת מייל
     const emailRegex = /^[\w\.-]+@[\w\.-]+\.\w+$/;
     
-    // פיצול לפי רווחים ו/או פסיקים
+    // פיצול לפי ר��וחים ו/או פסיקים
     const potentialEmails = input
         .split(/[,\s]+/)
         .map(email => email.trim())
