@@ -48,20 +48,6 @@ A simple and easy-to-use Chrome extension for extracting email addresses from we
 - HTML & CSS
 - Local Storage
 
-## License 📄
-
-MIT License - See `LICENSE` file for details.
-
-## Contributing 🤝
-
-Feel free to open issues or submit pull requests with improvements!
-
-1. Fork the repo
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
-
 ---
 
 <div align="center" dir="rtl">
