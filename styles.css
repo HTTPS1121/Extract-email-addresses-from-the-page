@@ -439,18 +439,52 @@ body {
 }
 
 .floating-edit {
+    display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: var(--glass);
-    padding: 1.5rem;
-    border-radius: 16px;
+    background: var(--glass-strong);
+    backdrop-filter: blur(10px);
     border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
     box-shadow: 0 8px 32px var(--shadow);
-    display: none;
-    min-width: 300px;
     z-index: 1000;
+    min-width: 300px;
+}
+
+#confirm-reset {
+    text-align: center;
+    width: 90%;
+    max-width: 320px;
+}
+
+#confirm-reset .confirm-message {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    color: var(--text);
+    font-weight: 500;
+}
+
+#confirm-reset .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.btn.danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn.danger:hover {
+    background: #bb2d3b;
+    transform: translateY(-1px);
+}
+
+.btn.danger:hover::before {
+    display: none;
 }
 
 .empty-state {

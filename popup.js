@@ -2,6 +2,7 @@ let extractedEmails = [];
 let ignoredEmails = [];
 let currentEditingEmail = null;
 let currentLanguage = navigator.language.startsWith('he') ? 'he' : 'en';
+let currentResetType = null;
 
 // טעינת הנתונים בעת פתיחת הפופאפ
 document.addEventListener('DOMContentLoaded', async () => {
@@ -43,10 +44,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                     break;
                 case 'reset':
                     if (document.querySelector('.tab.active').dataset.tab === 'emails') {
+                        showResetConfirm('extracted');
+                    } else {
+                        showResetConfirm('ignored');
+                    }
+                    break;
+                case 'confirm-reset':
+                    if (currentResetType === 'extracted') {
                         resetExtractedList();
                     } else {
                         resetIgnoreList();
                     }
+                    closeResetConfirm();
+                    break;
+                case 'cancel-reset':
+                    closeResetConfirm();
                     break;
                 case 'save':
                     saveEdit();
@@ -641,6 +653,21 @@ async function addManualEmails() {
     updateEmailsList();
     updateStats();
     document.getElementById('manual-emails-input').value = '';
+}
+
+function showResetConfirm(type) {
+    currentResetType = type;
+    const confirmDialog = document.getElementById('confirm-reset');
+    confirmDialog.style.display = 'block';
+    
+    // עדכון הטקסט בהתאם לסוג האיפוס
+    const message = type === 'extracted' ? 'האם אתה בטוח שברצונך לאפס את רשימת המיילים?' : 'האם אתה בטוח שברצונך לאפס את רשימת ההתעלמות?';
+    confirmDialog.querySelector('.confirm-message').textContent = message;
+}
+
+function closeResetConfirm() {
+    document.getElementById('confirm-reset').style.display = 'none';
+    currentResetType = null;
 }
 
 // שאר הפונקציות נשארות דומות... 
