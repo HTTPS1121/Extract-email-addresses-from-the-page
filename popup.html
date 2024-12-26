@@ -59,6 +59,20 @@
         </div>
         
         <div class="content" id="emails-content">
+            <div class="input-row">
+                <div class="input-wrapper">
+                    <input type="text" id="manual-emails-input" 
+                           placeholder="הכנס כתובות אימייל ידנית">
+                           <div class="tooltip">רווח או פסיק להפרדה בין כתובות</div>
+                           <div class="input-actions">
+                               <button class="icon-btn" data-action="add-manual" data-tooltip="הוסף לרשימת המיילים">
+                                   <svg class="icon" viewBox="0 0 24 24" fill="none">
+                                       <path d="M12 4.5v15m7.5-7.5h-15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                   </svg>
+                               </button>
+                           </div>
+                </div>
+            </div>
             <div class="list-area" id="emails-list"></div>
             <div class="buttons emails-buttons">
                 <button class="btn" data-action="extract">

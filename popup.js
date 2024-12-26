@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 case 'add':
                     addToIgnoreList();
                     break;
+                case 'add-manual':
+                    addManualEmails();
+                    break;
             }
         });
 
@@ -606,6 +609,38 @@ function updateUILanguage(lang) {
     
     // שינוי כיוון הטקסט בהתאם לשפה
     document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+}
+
+async function addManualEmails() {
+    const input = document.getElementById('manual-emails-input').value;
+    if (!input.trim()) return;
+
+    // רגקס לבדיקת תקינות כתובת מייל
+    const emailRegex = /^[\w\.-]+@[\w\.-]+\.\w+$/;
+    
+    // פיצול לפי רווחים ו/או פסיקים
+    const potentialEmails = input
+        .split(/[,\s]+/)
+        .map(email => email.trim())
+        .filter(email => email && emailRegex.test(email));
+    
+    if (potentialEmails.length === 0) return;
+    
+    // סינון כפילויות והתעלמויות
+    const newEmails = potentialEmails.filter(email => 
+        !extractedEmails.includes(email) && !ignoredEmails.includes(email)
+    );
+    
+    if (newEmails.length === 0) return;
+    
+    extractedEmails.push(...newEmails);
+    
+    // שמירה ב-storage
+    await chrome.storage.local.set({ extractedEmails });
+    
+    updateEmailsList();
+    updateStats();
+    document.getElementById('manual-emails-input').value = '';
 }
 
 // שאר הפונקציות נשארות דומות... 
