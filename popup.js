@@ -555,7 +555,13 @@ const translations = {
         
         // עריכה
         save: 'שמור',
-        cancel: 'ביטול'
+        cancel: 'ביטול',
+
+        // דיאלוג איפוס
+        resetExtractedConfirm: 'האם אתה בטוח שברצונך לאפס את רשימת המיילים?',
+        resetIgnoreConfirm: 'האם אתה בטוח שברצונך לאפס את רשימת ההתעלמות?',
+        confirmReset: 'אפס',
+        cancelReset: 'ביטול'
     },
     en: {
         // Tabs
@@ -580,7 +586,13 @@ const translations = {
         
         // Edit
         save: 'Save',
-        cancel: 'Cancel'
+        cancel: 'Cancel',
+
+        // Reset dialog
+        resetExtractedConfirm: 'Are you sure you want to reset the email list?',
+        resetIgnoreConfirm: 'Are you sure you want to reset the ignore list?',
+        confirmReset: 'Reset',
+        cancelReset: 'Cancel'
     }
 };
 
@@ -660,9 +672,14 @@ function showResetConfirm(type) {
     const confirmDialog = document.getElementById('confirm-reset');
     confirmDialog.style.display = 'block';
     
-    // עדכון הטקסט בהתאם לסוג האיפוס
-    const message = type === 'extracted' ? 'האם אתה בטוח שברצונך לאפס את רשימת המיילים?' : 'האם אתה בטוח שברצונך לאפס את רשימת ההתעלמות?';
+    // עדכון הטקסט בהתאם לסוג האיפוס ולשפה
+    const t = translations[currentLanguage];
+    const message = type === 'extracted' ? t.resetExtractedConfirm : t.resetIgnoreConfirm;
     confirmDialog.querySelector('.confirm-message').textContent = message;
+
+    // עדכון טקסט הכפתורים
+    confirmDialog.querySelector('[data-action="confirm-reset"]').textContent = t.confirmReset;
+    confirmDialog.querySelector('[data-action="cancel-reset"]').textContent = t.cancelReset;
 }
 
 function closeResetConfirm() {
