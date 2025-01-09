@@ -7,7 +7,7 @@ let currentResetType = null;
 // טעינת הנתונים בעת פתיחת הפופאפ
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        // טעינת רל הנתונים מהאחסון
+        // טעינת רשימות הנתונים מהאחסון
         const result = await chrome.storage.local.get(['ignoredEmails', 'extractedEmails']);
         ignoredEmails = result.ignoredEmails || [];
         extractedEmails = result.extractedEmails || [];
@@ -326,7 +326,7 @@ function updateIgnoreList() {
     });
 }
 
-// פונקציה לטיפול בעריכ כתובת מוחרגת
+// פונקציה לטיפול בעריכת כתובת מוחרגת
 function handleIgnoreEdit(input, index, originalText, isCancel = false) {
     const newValue = input.value.trim();
     
@@ -618,7 +618,7 @@ function updateUILanguage(lang) {
     document.querySelector('[data-action="copy"] span').textContent = t.copy;
     document.querySelector('[data-action="reset"] span').textContent = t.reset;
     
-    // עדכון טדה הוספה ידנית
+    // עדכון טקסט הוספה ידנית
     const manualInput = document.getElementById('manual-emails-input');
     if (manualInput) {
         manualInput.placeholder = t.manualInputPlaceholder;
@@ -660,7 +660,7 @@ async function addManualEmails() {
     // רגקס לבדיקת תקינות כתובת מייל
     const emailRegex = /^[\w\.-]+@[\w\.-]+\.\w+$/;
     
-    // פיצול לפי ר��וחים ו/או פסיקים
+    // פיצול לפי רווחים ו/או פסיקים
     const potentialEmails = input
         .split(/[,\s]+/)
         .map(email => email.trim())
@@ -704,5 +704,3 @@ function closeResetConfirm() {
     document.getElementById('confirm-reset').style.display = 'none';
     currentResetType = null;
 }
-
-// שאר הפונקציות נשארות דומות... 
