@@ -17,12 +17,15 @@ A simple and easy-to-use Chrome extension for extracting email addresses from we
 ## Key Features 🚀
 
 - Automatic email extraction from any webpage
+- Gmail integration with toolbar button
+- Extract emails from selected messages in Gmail
+- Save and manage extracted email addresses
 - Ignore list for filtering unwanted addresses
 - Full Hebrew and English support
 - Dark/Light mode
 - Quick copy of all addresses to clipboard
 - Manual address editing
-- Clean and intuitive UI
+- Clean and intuitive UI with modern glassmorphism design
 
 ## Installation 💻
 
@@ -65,12 +68,15 @@ A simple and easy-to-use Chrome extension for extracting email addresses from we
 ## תכונות עיקריות 🚀
 
 - חילוץ אוטומטי של כתובות אימייל מכל דף אינטרנט
+- אינטגרציה עם Gmail וכפתור בסרגל הכלים
+- חילוץ כתובות אימייל מהודעות נבחרות ב-Gmail
+- שמירה וניהול של כתובות האימייל שחולצו
 - רשימת התעלמות לסינון כתובות לא רצויות
 - תמיכה מלאה בעברית ואנגלית
 - מצב כהה/בהיר
 - העתקה מהירה של כל הכתובות ללוח
 - עריכת כתובות ידנית
-- ממשק משתמש נקי ואינטואיטיבי
+- ממשק משתמש נקי ואינטואיטיבי בעיצוב זכוכית מודרני
 
 ## התקנה 💻
 
